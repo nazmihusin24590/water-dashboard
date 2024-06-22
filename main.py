@@ -21,4 +21,3 @@ st.write('Date, Monitoring pH, COD, SS, and Volume of Discharge')
 # Show the dataframe
 st.write(df)
 
-streamlit run water_quality_dashboard.py
