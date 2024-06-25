@@ -1,23 +1,55 @@
+# Import necessary libraries
 import streamlit as st
 import pandas as pd
-import numpy as np
-import plotly.express as px
+import matplotlib.pyplot as plt
+import urllib
 
-# Example GitHub raw data URL
-github_url = 'https://raw.githubusercontent.com/<nazmihusin24590>/water-dashboard/blob/main/Data.csv'
+# Function to load data from GitHub
+@st.cache  # Cache data for faster reload
+def load_data():
+    url = 'https://raw.githubusercontent.com/your_username/your_repository/main/Data.csv'
+    df = pd.read_csv(url)
+    return df
 
-# Load data from GitHub
-@st.cache  # Cache data for better performance
-def load_data(url):
-    data = pd.read_csv(url)
-    return data
+# Function to plot line chart
+def plot_line_chart(df, x_col, y_col, title, x_label, y_label):
+    fig, ax = plt.subplots()
+    ax.plot(df[x_col], df[y_col])
+    ax.set_title(title)
+    ax.set_xlabel(x_label)
+    ax.set_ylabel(y_label)
+    st.pyplot(fig)
 
-df = load_data(github_url)
+# Function to plot bar chart
+def plot_bar_chart(df, x_col, y_col, title, x_label, y_label):
+    fig, ax = plt.subplots()
+    ax.bar(df[x_col], df[y_col])
+    ax.set_title(title)
+    ax.set_xlabel(x_label)
+    ax.set_ylabel(y_label)
+    st.pyplot(fig)
 
-# Display data in Streamlit
-st.title('Water Quality Discharge Dashboard')
-st.write('Date, Monitoring pH, COD, SS, and Volume of Discharge')
+# Main function
+def main():
+    st.title('Water Quality and Discharge Dashboard')
 
-# Show the dataframe
-st.write(df)
+    # Load data
+    df = load_data()
 
+    # Display the dataframe
+    st.subheader('Data Table')
+    st.write(df)
+
+    # Line charts for pH, COD, SS
+    st.subheader('Line Charts')
+
+    plot_line_chart(df, 'Date', 'pH', 'Date vs pH', 'Date', 'pH')
+    plot_line_chart(df, 'Date', 'COD', 'Date vs COD', 'Date', 'COD')
+    plot_line_chart(df, 'Date', 'SS', 'Date vs SS', 'Date', 'SS')
+
+    # Bar chart for volume of discharge
+    st.subheader('Bar Chart for Volume of Discharge')
+    plot_bar_chart(df, 'Date', 'Volume of discharge (m3)', 'Date vs Volume of Discharge', 'Date', 'Volume (m3)')
+
+if __name__ == '__main__':
+    main()
