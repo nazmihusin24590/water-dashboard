@@ -7,7 +7,7 @@ import urllib
 # Function to load data from GitHub
 @st.cache  # Cache data for faster reload
 def load_data():
-    url = 'https://raw.githubusercontent.com/your_username/your_repository/main/Data.csv'
+    url = 'https://github.com/nazmihusin24590/water-dashboard/blob/main/Data.csv'
     df = pd.read_csv(url)
     return df
 
